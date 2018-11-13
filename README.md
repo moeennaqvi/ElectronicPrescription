@@ -1,0 +1,1 @@
+# ElectronicPrescription is a complete end-to-end application made for Doctors, Patients, Pharmacists, Clinics and Pharmacies. It's built using ASP.NET MVC, WEB API. An iOS app is also made for Doctors and Patients.
