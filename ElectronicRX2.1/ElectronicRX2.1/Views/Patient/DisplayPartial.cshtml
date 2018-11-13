@@ -1,0 +1,123 @@
+﻿@model IEnumerable<ElectronicRX2._1.Models.PatientModel>
+
+
+<!--Table-->
+<table class="table table-striped table-bordered table-condensed" id="dataTable">
+    <thead>
+        <tr>
+            <th>
+                Patient ID
+            </th>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Date of Birth
+            </th>
+            <th>
+                Gender
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                State
+            </th>
+            <th>
+                Zip Code
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PatientID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.Label(item.BirthDate.Day.ToString() + "-" + item.BirthDate.Month.ToString() + "-" + item.BirthDate.Year.ToString())
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ZipCode)
+                </td>
+
+                <td>
+                    <input type="button" class="btn btn-sm btn-success" value="Select" id="btnSelected" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+
+    jQuery('#dataTable tbody tr').on('click', function () {
+            var $row = jQuery(this).closest('tr');
+            var $columns = $row.find('td');
+            $columns.addClass('row-highlight');
+            var objects = [];
+            var values = "";
+            jQuery.each($columns, function (i, item) {
+                objects[i] = $.trim(item.innerHTML);
+                values = values + "" + item.innerHTML;
+            });
+            $('#patientModal').modal('hide');
+            $('#patientIdEdit').val(objects[0]);
+            $('#patientFNameEdit').val(objects[1]);
+            $('#patientLNameEdit').val(objects[2]);
+
+            $('#patientFName').empty();
+            $('#patientFName').append(objects[1] + " ,");
+
+            $('#patientLname').empty();
+            $('#patientLname').append(objects[2] + " ,");
+
+            $('#patientLname').empty();
+            $('#patientLname').append(objects[2] + " ,");
+
+            $('#patientDOB').empty();
+            $('#patientDOB').append(objects[3] + " ,");
+
+            $('#patientGender').empty();
+            $('#patientGender').append(objects[4]);
+
+            $('#patientAddress').empty();
+            $('#patientAddress').append(objects[5] + " ,");
+
+            $('#patientCity').empty();
+            $('#patientCity').append(objects[6] + " ,");
+
+            $('#patientState').empty();
+            $('#patientState').append(objects[7] + " ,");
+
+            $('#patientZip').empty();
+            $('#patientZip').append(objects[8]);
+        });
+</script>

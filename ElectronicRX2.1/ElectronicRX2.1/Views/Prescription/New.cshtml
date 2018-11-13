@@ -1,0 +1,561 @@
+﻿@model ElectronicRX2._1.Models.PrescriptionModel
+
+@{
+    ViewBag.Title = "New";
+    var db = new ElectronicRX2._1.Models.ApplicationDbContext();
+    var email = User.Identity.Name;
+    var service = new ElectronicRX2._1.DataAccess.PrescriptionService();
+    
+    var prescriberId = "";
+    var prescriberName = "";
+
+    var doctorFName = "";
+    var doctorLName = "";
+    var doctorAddress = "";
+    var doctorCity = "";
+    var doctorState = "";
+    var doctorZip = "";
+    var doctorNumber = "";
+    
+    var patientFName = "";
+    var patientLName = "";
+    var patientDOB = "";
+    var patientGender = "";
+    var patientAddress = "";
+    var patientCity = "";
+    var patientState = "";
+    var patientZip = "";
+
+    var pharmacyName = "";
+    var pharmacyAddress = "";
+    var pharmacyCity = "";
+    var pharmacyState = "";
+    var pharmacyZip = "";
+    
+    
+    if(User.IsInRole("Doctor"))
+    {
+        var doctor = service.doctors.GetUsingEmail(email);
+        prescriberId = doctor.ID;
+        prescriberName = doctor.FirstName + " " + doctor.LastName;
+
+        doctorFName = doctor.FirstName;
+        doctorLName = doctor.LastName;
+        doctorAddress = doctor.StreetAddress;
+        doctorCity = doctor.City;
+        doctorNumber = doctor.PhoneNumber;
+        doctorState = doctor.State;
+        doctorZip = doctor.ZipCode;        
+    }
+}
+
+<h2>New RX</h2>
+<legend></legend>
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })          
+            
+    </div>
+    
+    
+
+    <div class="row">
+
+        <!--Prescriber Information-->
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> <b>Presciber Information</b></h3>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        <div class="col-md-4">
+                            <label>Prescriber:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <label>@prescriberName</label>
+                        </div>
+                        @Html.EditorFor(model => model.DoctorID, new { htmlAttributes = new { @class = "form-control", type = "hidden", id="doctorId" } })                        
+                    </p>                   
+
+                </div>
+            </div>
+            </div>
+
+        <!--Patient Information-->
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><b>Patient Information</b></h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            <div class="col-md-4">
+                                <label id="patientFName">@patientFName</label>
+                                <label id="patientLname">@patientLName </label>
+                                <label id="patientDOB">@patientDOB </label>
+                                <label id="patientGender">   @patientGender </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label id="patientAddress">@patientAddress</label>
+                                <label id="patientCity">@patientCity</label>
+                                <label id="patientState">@patientState</label>
+                                <label id="patientZip">    @patientZip </label>
+                                @Html.EditorFor(model => model.PatientID, new { htmlAttributes = new { @class = "form-control", type = "hidden", id="patientIdEdit" } })
+                                @Html.EditorFor(model => model.PatientFName, new { htmlAttributes = new { @class = "form-control", type = "hidden", id="patientFNameEdit" } })
+                                @Html.EditorFor(model => model.PatientLName, new { htmlAttributes = new { @class = "form-control", type = "hidden", id="patientLNameEdit" } })
+                            </div>
+                            <div class="col-md-2">
+                                <input type="button" class="btn-primary" data-toggle="modal" data-target="#patientModal" value="Search" />
+                            </div>
+                        </p>
+                        
+
+                    </div>
+                </div>
+            </div>
+    </div>
+    
+    <!--Pharmacy Information-->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><b>Pharmacy Information</b></h3>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        <div class="col-md-4">
+                            <label id="pharmacyNamelbl">  @pharmacyName </label>
+                            <label id="pharmacyNumberlbl"></label>
+                        </div>
+                        <div class="col-md-6">
+                            <label id="pharmacyAddresslbl">@pharmacyAddress</label><b>,</b>
+                            <label id="pharmacyCitylbl">@pharmacyCity</label><b>,</b>
+                            <label id="pharmacyStatelbl">@pharmacyState</label><b>,</b>
+                            <label id="pharmacyZiplbl">@pharmacyZip</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="button" class="btn-primary" data-toggle="modal" data-target="#pharmacyModal" value="Search" />
+                        </div>                        
+                            @Html.EditorFor(model => model.PharmacyID, new { htmlAttributes = new { @class = "form-control", type = "hidden", id="pharmacyId" } })                        
+                            @Html.EditorFor(model => model.PharmacyName, new { htmlAttributes = new { @class = "form-control", type = "hidden", id="pharmacyName" } })                        
+                    </p>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    <div class="row">
+
+        <!--Medication Information-->
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><b>Medication Information</b></h3>
+                </div>
+                <div class="panel-body">                    
+                    <div class="form-horizontal">
+                        <p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>  Medicine </label>
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.DrugID, new { htmlAttributes = new { @class = "form-control", type = "hidden", id="drugId" } })
+                                    @Html.EditorFor(model => model.DrugName, new { htmlAttributes = new { @class = "form-control", id="drugName" } })
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="button" class="btn-primary" data-toggle="modal" data-target="#medicineModal" value="Search" />
+                                </div>
+                            </div>                            
+                        </p>                        
+                        <p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>  SIG </label>
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.SIG, new { htmlAttributes = new { @class = "form-control", id="SIG" } })
+                                </div>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>  Quantity </label>
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", id="Quantity" } })
+                                </div>
+                                <div class="col-md-2">
+                                    <label>  Days </label>
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.Days, new { htmlAttributes = new { @class = "form-control", id="Days" } })
+                                </div>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>  Refills </label>
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.Refills, new { htmlAttributes = new { @class = "form-control", id="Refills" } })
+                                </div>
+                                <div class="col-md-2">
+                                    <label>  Unit </label>
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.EditorFor(model => model.Units, new { htmlAttributes = new { @class = "form-control", id="Units" } })
+                                </div>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>  Comments </label>
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.TextAreaFor(model => model.Comments, htmlAttributes: new { @class = "form-control", id="Comments" })
+                                </div>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>  DAW </label>
+                                </div>
+                                <div class="col-md-1">
+                                    @Html.CheckBoxFor(model => model.DAW, htmlAttributes: new { @id = "DAW" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label>  Written Date </label>
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.WrittenDate, new { htmlAttributes = new { @class = "form-control datepicker", id="writtenDate" } })
+                                </div>
+                                
+                            </div>
+                            <br />
+                        </p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <!--Drug Warnings-->
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><b>Drug Warnings</b></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>  Drug to Drug </label>
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.TextAreaFor(model => model.DrugWarnings, htmlAttributes: new { @class = "form-control", id="drugWarnings" })
+                                </div>
+                            </div>
+                            </p>
+                        <p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>  Drug to Disease </label>
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.TextAreaFor(model => model.DiseaseWarnings, htmlAttributes: new { @class = "form-control", id="diseaseWarnings" })
+                                </div>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>  Drug to Allergy </label>
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.TextAreaFor(model => model.AllergyWarnings, htmlAttributes: new { @class = "form-control", id="alergyWarnings" })
+                                </div>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>  Drug to Food </label>
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.TextAreaFor(model => model.FoodWarnings, htmlAttributes: new { @class = "form-control", id="foodWarnings" })
+                                </div>
+                            </div>
+                        </p>
+
+                        <p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>  Override Warnings </label>
+                                </div>
+                                <div class="col-md-1">
+                                    @Html.CheckBoxFor(model => model.OverrideWarning)
+                                </div>
+                                <div class="col-md-2">
+                                    <label>  Reason </label>
+                                </div>
+                                <div class="col-md-5">
+                                    @Html.EditorFor(model => model.OverrideReason, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </p>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">                
+                <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#RXSummaryModal" value="Show Summary" id="btnModal" />
+                <input type="submit" value="Create" class="btn btn-success" />
+                <a href="~/Prescription/Index" class="btn btn-danger">Back</a>
+
+                
+            </div>
+            <br /><br /><br /><br /><br />
+        </div>
+}
+
+
+<div class="modal fade " id="RXSummaryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel"><b>Prescription Summary</b></h4>
+            </div>
+            <div class="modal-body">
+                @{ Html.RenderAction("RXSummary", "Prescription"); }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade " id="patientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel"><b>Search Patient</b></h4>
+            </div>
+            <div class="modal-body">
+                @{ Html.RenderAction("SearchPartial", "Patient"); }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<div class="modal fade " id="pharmacyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel"><b>Search Pharmacy</b></h4>
+            </div>
+            <div class="modal-body">
+                @{ Html.RenderAction("SearchPartial", "Pharmacy"); }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade " id="medicineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel"><b>Search Medicine</b></h4>
+            </div>
+            <div class="modal-body">
+                @{ Html.RenderAction("SearchPartial", "Drug"); }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#doctorId').val('@prescriberId');
+    });
+</script>
+
+<script type="text/javascript">
+    jQuery('#btnModal').on('click', function () {
+
+        $('#doctorFName').empty();
+        $('#doctorFName').append('@doctorFName');
+
+        $('#doctorLName').empty();
+        $('#doctorLName').append('@doctorLName');
+
+        $('#doctorAddress').empty();
+        $('#doctorAddress').append('@doctorAddress');
+
+        $('#doctorCity').empty();
+        $('#doctorCity').append('@doctorCity');
+
+        $('#doctorState').empty();
+        $('#doctorState').append('@doctorState');
+
+        $('#doctorZip').empty();
+        $('#doctorZip').append('@doctorZip');
+
+        $('#doctorPhoneNumber').empty();
+        $('#doctorPhoneNumber').append('@doctorNumber');
+
+        $('#writtenDatelbl').empty();
+        var date = $('#writtenDate').val()
+        $('#writtenDatelbl').append(date);
+
+
+        var pfname = $('#patientFName').text();
+        var plname = $('#patientLname').text();
+        var pdob = $('#patientDOB').text();
+        var pgender = $('#patientGender').text();
+        var paddress = $('#patientAddress').text();
+        var pcity = $('#patientCity').text();
+        var pstate = $('#patientState').text();
+        var pzip = $('#patientZip').text();
+
+        $('#patientFNamelbl').empty();
+        $('#patientFNamelbl').append(pfname);
+
+        $('#patientLastNamelbl').empty();
+        $('#patientLastNamelbl').append(plname);
+
+        $('#patientDOBlbl').empty();
+        $('#patientDOBlbl').append(pdob);
+
+        $('#patientGenderlbl').empty();
+        $('#patientGenderlbl').append(pgender);
+
+        $('#patientAddresslbl').empty();
+        $('#patientAddresslbl').append(paddress);
+
+        $('#patientCitylbl').empty();
+        $('#patientCitylbl').append(pcity);
+
+        $('#patientStatelbl').empty();
+        $('#patientStatelbl').append(pstate);
+
+        $('#patientZiplbl').empty();
+        $('#patientZiplbl').append(pzip);
+
+        //patient vars completed
+        var drugName = $('#drugName').val();
+        var SIG = $('#SIG').val();
+        var Quantity = $('#Quantity').val();
+        var days = $('#Days').val();
+        var refill = $('#Refills').val();
+        var DAW = $("#DAW").is(":checked") ? "true" : "false";
+        var units = $('#Units').val();
+        var comments = $('#Comments').val();
+
+        $('#drugNamelbl').empty();
+        $('#drugNamelbl').append(drugName);
+
+        $('#siglbl').empty();
+        $('#siglbl').append(SIG);
+
+        $('#quantitylbl').empty();
+        $('#quantitylbl').append(Quantity);
+
+        $('#dayslbl').empty();
+        $('#dayslbl').append(days);
+
+        $('#refillslbl').empty();
+        $('#refillslbl').append(refill);
+
+        $('#dawlbl').empty();
+        $('#dawlbl').append(DAW);
+
+        $('#unitslbl').empty();
+        $('#unitslbl').append(units);
+
+        $('#commentslbl').empty();
+        $('#commentslbl').append(comments);
+
+        //Drugs vars completed
+
+        var pharmacyName = $('#pharmacyNamelbl').text();
+        var pharmacyID = $('#pharmacyId').val();
+        var pharmacyaddress = $('#pharmacyAddresslbl').text();
+        var pharmacycity = $('#pharmacyCitylbl').text();
+        var pharmacystate = $('#pharmacyStatelbl').text();
+        var pharmacyzip = $('#pharmacyZiplbl').text();
+        var pharmacyPhone = $('#pharmacyNumberlbl').text();
+
+        $('#pharmacyNamel').empty();
+        $('#pharmacyNamel').append(pharmacyName);
+
+        $('#pharmacyIdl').empty();
+        $('#pharmacyIdl').append(pharmacyID);
+
+        $('#pharmacyAddressl').empty();
+        $('#pharmacyAddressl').append(pharmacyaddress);
+
+        $('#pharmacyZipl').empty();
+        $('#pharmacyZipl').append(pharmacyzip);
+
+        $('#pharmacyCityl').empty();
+        $('#pharmacyCityl').append(pharmacycity);
+
+        $('#pharmacyStatel').empty();
+        $('#pharmacyStatel').append(pharmacystate);
+
+        $('#pharmacyNumberl').empty();
+        $('#pharmacyNumberl').append(pharmacyPhone);
+
+        });
+</script>
+
+@*
+
+
+*@

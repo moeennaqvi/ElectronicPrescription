@@ -1,0 +1,248 @@
+﻿@model IEnumerable<ElectronicRX2._1.Models.PrescriptionModel>
+
+@{
+    
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+<h2>Fill an RX</h2>
+<legend></legend>
+<!--Table-->
+<table class="table table-striped table-bordered table-condensed", id="dataTable">
+    <thead>
+        <tr>
+            <th>
+                RX ID
+            </th>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Prescription Date
+            </th>
+            <th>
+                Prescriber
+            </th>
+            <th>
+                Pharmacy
+            </th>
+            <th>
+                Medicine
+            </th>
+            <th>
+                SIG
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Days
+            </th>
+            <th>
+                Units
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <label>@item.PrescriptionID</label>
+                </td>
+                <td>
+                    <label>@item.PatientFName</label>
+                </td>
+                <td>
+                    <label>@item.PatientLName</label>
+                </td>
+                <td>
+                    <label id="status">@item.Status</label>
+                </td>
+                <td>
+                    @Html.Label(item.WrittenDate.Day.ToString() + "-" + item.WrittenDate.Month.ToString() + "-" + item.WrittenDate.Year.ToString())
+                </td>
+                <td>
+                    <label>@item.DoctorName</label>
+                </td>
+                <td>
+                    <label>@item.PharmacyName</label>
+                </td>
+                <td>
+                    <label>@item.DrugName</label>
+                </td>
+                <td>
+                    <label>@item.SIG</label>
+                </td>
+                <td>
+                    <label>@item.Quantity</label>
+                </td>
+                <td>
+                    <label>@item.Days</label>
+                </td>
+                <td>
+                    <label>@item.Units</label>
+                </td>
+                @*
+        <button data-url='@Url.Action("FillPartial", "Prescription", new { id = item.PrescriptionID })'
+                class="btn-success btn-sm customerDetails">
+            Select
+        </button>*@
+                <td>
+                    @*
+    @Html.CheckBox("Select", false, new { htmlAttributes = new { @class = "form-control", id="Selected" } })
+                    *@
+                        <input type="checkbox" class="display_checkbox" />
+                </td>
+
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade " id="RXFillModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel"><b>Fill RX</b></h4>
+            </div>
+            <div class="modal-body">
+                @*
+    @{ Html.RenderAction("FillPartial", "Prescription"); }
+                *@
+                <div id="RXFillPartial"></div>
+            </div>
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            *@
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(document).on('click', '.display_checkbox', function () {
+            if ($(this).prop('checked')) {
+                var $row = jQuery(this).closest('tr');
+                var $columns = $row.find('td');
+                $columns.addClass('row-highlight');
+                var objects = [];
+                var values = "";
+                jQuery.each($columns, function (i, item) {
+                    objects[i] = $.trim(item.innerHTML);
+                    objects[i] = $(objects[i]).text();
+                });
+                $('#RXFillPartial').load( '<%= Url.Action("FillPartial", "Prescripton") %>', { id: objects[0] });
+                $('#RXFillModal').modal('show');
+            } else {
+                
+            }
+        });
+    });
+</script>
+
+@*
+    <script type="text/javascript">
+
+        jQuery('#dataTable tbody tr').on('click', function () {
+            var $row = jQuery(this).closest('tr');
+            var $columns = $row.find('td');
+            $columns.addClass('row-highlight');
+            var objects = [];
+            var values = "";
+            jQuery.each($columns, function (i, item) {
+                objects[i] = $.trim(item.innerHTML);
+                values = values + "" + item.innerHTML;
+            });
+            $('#RXFillModal').modal('show');
+            $('#patientIdEdit').val(objects[0]);
+            $('#patientFNameEdit').val(objects[1]);
+            $('#patientLNameEdit').val(objects[2]);
+
+            $('#patientFName').empty();
+            $('#patientFName').append(objects[1] + " ,");
+
+            $('#patientLname').empty();
+            $('#patientLname').append(objects[2] + " ,");
+
+            $('#patientLname').empty();
+            $('#patientLname').append(objects[2] + " ,");
+
+            $('#patientDOB').empty();
+            $('#patientDOB').append(objects[3] + " ,");
+
+            $('#patientGender').empty();
+            $('#patientGender').append(objects[4]);
+
+            $('#patientAddress').empty();
+            $('#patientAddress').append(objects[5] + " ,");
+
+            $('#patientCity').empty();
+            $('#patientCity').append(objects[6] + " ,");
+
+            $('#patientState').empty();
+            $('#patientState').append(objects[7] + " ,");
+
+            $('#patientZip').empty();
+            $('#patientZip').append(objects[8]);
+        });
+    </script>
+
+*@
+
+
+
+
+@*
+    <script type="text/javascript">
+            $('.js-reload-details').on('click', function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
+                var $detailDiv = $('#RXFillPartial'),
+                    url = $(this).data('url');
+
+                $.get(url, function (data) {
+                    $detailsDiv.replaceWith(data);
+                });
+                $('#RXFillModal').modal('show');
+            });
+        </script>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+
+                $(".customerDetails").click(function (evt) {
+                    var cell = $(evt.target).closest("tr").children().first();
+                    var custID = cell.text();
+                    $('#RXFillPartial').load(
+            '<%= Url.Action("FillPartial", "Prescripton") %>',
+            { id: custID }
+        );
+                    $('#RXFillModal').modal('show');
+                });
+
+                $(".orderDetails").click(function (evt) {
+                    var cell = $(evt.target).closest("tr").children().first();
+                    var custID = cell.text();
+                    $("#viewPlaceHolder").load("/home/getview",
+                       { customerID: custID, viewName: "OrderDetails" });
+                });
+            });
+        </script>
+
+*@

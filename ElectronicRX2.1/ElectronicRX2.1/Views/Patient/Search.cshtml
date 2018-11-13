@@ -1,0 +1,45 @@
+﻿@model ElectronicRX2._1.Models.PatientSearchViewModel
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Search Patients</h2>
+<hr />
+@*
+    @using (Html.BeginForm("Search", "Patient", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+*@
+
+@using (Ajax.BeginForm("Search", "Patient", new AjaxOptions()
+                                                        {
+                                                            HttpMethod = "POST",
+                                                            UpdateTargetId = "divPatients",
+                                                            InsertionMode = InsertionMode.Replace
+                                                        }))
+{
+    <div class="row">
+        @Html.Label("Search By")
+        @Html.DropDownListFor(m => m.condition, (SelectList)ViewBag.SearchType)
+        @Html.TextBoxFor(m => m.value)
+        <input type="submit" value="Search" class="btn btn-sm btn-primary" />
+    </div>
+    <hr />
+    
+
+}
+
+<div id="divPatients">
+
+</div>     
+
+<p>
+    <a href="~/Patient/Create" class="btn btn-primary">Create New</a>
+</p>
+
+@if (TempData["notice"] != null)
+{
+    <p>@TempData["notice"]</p>
+}

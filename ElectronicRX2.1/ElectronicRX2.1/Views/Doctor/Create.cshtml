@@ -1,0 +1,225 @@
+﻿@model ElectronicRX2._1.Models.DoctorModel
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+@{
+    ViewBag.Title = "Create";
+    var clinicId = "";
+    var clinicName = "";
+    if(User.IsInRole("Clinician"))
+    {
+        var db = new ElectronicRX2._1.Models.ApplicationDbContext();
+        var email = db.Users.FirstOrDefault(i => i.UserName == User.Identity.Name).Email;
+        var service = new ElectronicRX2._1.DataAccess.PrescriptionService();
+        var clinic = service.clinicians.GetClinic(email);
+        clinicId = clinic.ID;
+        clinicName = clinic.ClinicName;        
+    }
+    
+}
+
+<h2>Add New Doctor</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <legend>Clinic Information</legend>
+    <div class='row'>
+
+        <div class="col-md-2">
+            <label for="user_title">&nbsp;&nbsp; Clinic Id</label>
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.ClinicID, new { htmlAttributes = new { @id = "ClinicId", size = "200" } })
+            @Html.ValidationMessageFor(model => model.ClinicID, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-2">
+            <input type="button" class="btn-primary" data-toggle="modal" data-target="#exampleModal" value="Search" />
+        </div>
+    </div>
+    <div class='row'>
+
+        <div class="col-md-2">
+            <label for="user_title">&nbsp;&nbsp; Clinic Name</label>
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.ClinicName, new { htmlAttributes = new { @id = "ClinicName", size = "200" } })
+            @Html.ValidationMessageFor(model => model.ClinicName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <br />
+        
+
+    <legend>Doctor Personal Information</legend>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                &nbsp;&nbsp;&nbsp;
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control", placeholder = "Doctor's Email*" })
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Doctor's First Name*" })
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Doctor's Last Name*" })
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                &nbsp;&nbsp;&nbsp;
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                @Html.TextBoxFor(m => m.DOB, new { @class = "form-control datepicker", placeholder = "Date of Birth*" })
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                <span class="input-group-addon"><i class="fa fa-mobile-phone"></i></span>
+                @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control", placeholder = "Doctor's Mobile No." })
+            </div>
+        </div>
+
+        <div class='col-sm-4'>
+            <div class='form-group'>
+                <span class="radio-inline"><b>Gender</b></span>
+                <div class="radio-inline">
+                    @Html.RadioButtonFor(m => m.Gender, "Male") Male
+                </div>
+                <div class="radio-inline">
+                    @Html.RadioButtonFor(m => m.Gender, "Female") Female
+                </div>
+                <div class="radio-inline">
+                    @Html.RadioButtonFor(m => m.Gender, "Other") Other
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                &nbsp;&nbsp;&nbsp;
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter Password*" })
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password*" })
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <legend>Doctor Contact Information</legend>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                &nbsp;&nbsp;&nbsp;
+                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Doctor's Phone Number" })
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                <span class="input-group-addon"><i class="fa fa-fax"></i></span>
+                @Html.TextBoxFor(m => m.FaxNumber, new { @class = "form-control", placeholder = "Doctor's Fax Number" })
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                <span class="input-group-addon"><i class="fa fa-bullseye"></i></span>
+                @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control", placeholder = "Zip Code" })
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                &nbsp;&nbsp;&nbsp;
+                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                @Html.TextBoxFor(m => m.StreetAddress, new { @class = "form-control", placeholder = "Street Address" })
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                <span class="input-group-addon"><i class="fa fa-building-o"></i></span>
+                @Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "City" })
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group input-group">
+                <span class="input-group-addon"><i class="fa fa-globe"></i></span>
+                @Html.TextBoxFor(m => m.State, new { @class = "form-control", placeholder = "State" })
+            </div>
+        </div>
+
+
+
+    </div>
+    <legend></legend>       
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a  href="~/Doctor/Index" type="button" class="btn btn-danger">Back</a>
+            </div>
+        </div>
+}
+
+
+<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel"><b>Search Clinic</b></h4>
+            </div>
+            <div class="modal-body">
+                @{ Html.RenderAction("SearchPartial", "Clinic"); }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#ClinicId').val('@clinicId');
+        $('#ClinicName').val('@clinicName');
+    });
+</script>
+

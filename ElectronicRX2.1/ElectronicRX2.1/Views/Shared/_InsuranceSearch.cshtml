@@ -1,0 +1,26 @@
+﻿@model ElectronicRX2._1.Models.InsuranceFirmIndexModel
+
+<form>
+    <div class="form-group">
+        <b>Search Criteria</b>
+        &nbsp;&nbsp;&nbsp;
+        <div class="radio-inline">
+            @Html.RadioButton("Male", "Male") Male
+        </div>
+        <div class="radio-inline">
+            @Html.RadioButton("Female", "Female") Female
+        </div>
+        <div class="radio-inline">
+            @Html.RadioButton("Other", "Other") Other
+        </div>
+    </div>
+    <hr />
+    <div class="form-group">
+        <label for="recipient-name" class="control-label">Recipient:</label>
+        <input type="text" class="form-control" id="recipient-name">
+    </div>
+    <div class="form-group">
+        <label for="message-text" class="control-label">Message:</label>
+        <textarea class="form-control" id="message-text"></textarea>
+    </div>
+</form>

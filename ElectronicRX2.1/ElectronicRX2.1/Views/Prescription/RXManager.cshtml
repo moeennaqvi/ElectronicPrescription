@@ -1,0 +1,219 @@
+﻿@using ElectronicRX2._1.Models
+@model RXManagerViewModel
+@{
+    ViewBag.Title = "RX Manager";
+    
+    var SuccessNumber = (int)ViewData["SuccessNumber"];
+    var PendingNumber = (int)ViewData["PendingNumber"];
+    var QueuedNumber = (int)ViewData["QueuedNumber"];
+    var ErrorNumber = (int)ViewData["ErrorNumber"];
+    var AcknowledgedErrorNumber = (int)ViewData["AcknowledgedErrorNumber"];
+    var DenyNumber = (int)ViewData["DenyNumber"];   
+    
+}
+
+
+
+    <html>
+    <head>
+        <title>RX Manager</title>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.datepicker').datepicker({
+                    dateFormat: "dd-mm-yy",
+                    minDate: 0
+                });
+            });
+        </script>
+
+
+
+    </head>
+    <body>
+        <h2>Prescription Manager</h2>
+        <hr />
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <h3>Search</h3>
+        <div id="page-wrapper">
+            @using (Html.BeginForm("RXManager", "Prescription", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+
+                @Html.TextBoxFor(r => r.startDate, new { @class = "datepicker", @placeholder = "Starting Date" })
+                @Html.Label("To")
+                @Html.TextBoxFor(r => r.EndDate, new { @class = "datepicker", @placeholder = "Ending Date" })
+                <input type="submit" value="Refresh" class="btn btn-primary" />
+            }
+        </div>
+        <hr />
+        <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-check fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">
+                                        @Html.Label(SuccessNumber.ToString())
+                                    </div>
+                                    <div>Success</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-exclamation fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">
+                                       @Html.Label(PendingNumber.ToString())
+                                    </div>
+                                    <div>Pending</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-users fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">
+                                       @Html.Label( QueuedNumber.ToString())
+                                    </div>
+                                    <div>Queued</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                </div>
+        <div class="row">
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-warning fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">
+                                       @Html.Label( ErrorNumber.ToString())
+                                    </div>
+                                    <div>Error</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-exclamation-triangle fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">
+                                        @Html.Label(AcknowledgedErrorNumber.ToString())
+                                    </div>
+                                    <div>Acknowledged Error</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-times-circle fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">
+                                        @Html.Label(DenyNumber.ToString())
+                                    </div>
+                                    <div>Deny</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+            <script src=@Url.Content("~/js/bootstrap-datepicker.js") type="text/javascript"></script>
+            <script src="~/js/jquery.js" type="text/javascript"></script>
+            <script src="~/Scripts/bootstrap.js" type="text/javascript"></script>
+            <script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+</body>
+</html>

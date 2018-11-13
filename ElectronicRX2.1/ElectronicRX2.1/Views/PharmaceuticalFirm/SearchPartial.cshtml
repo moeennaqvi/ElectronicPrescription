@@ -1,0 +1,62 @@
+﻿@model ElectronicRX2._1.Models.PharmaceuticalSearchViewModel
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<!---->
+@{
+    var db = new ElectronicRX2._1.Models.ApplicationDbContext();
+    string email = db.Users.FirstOrDefault(i => i.UserName == User.Identity.Name).Email;
+    var service = new ElectronicRX2._1.DataAccess.PrescriptionService();
+    var state = "";
+    if (User.IsInRole("Clinician"))
+    {
+        state = service.clinicians.GetStateUsingEmail(email);
+    }
+    else if (User.IsInRole("Doctor"))
+    {
+        state = service.clinicians.GetStateUsingEmail(email);
+    }
+
+}
+
+@*
+    @using (Html.BeginForm("SearchPartial", "InsuranceFirm", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+*@
+@using (Ajax.BeginForm("SearchPartial", "PharmaceuticalFirm", new AjaxOptions()
+                                                        {
+                                                            HttpMethod = "POST",
+                                                            UpdateTargetId = "divInsurances",
+                                                            InsertionMode = InsertionMode.Replace
+                                                        }))
+{
+
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <legend></legend>
+
+    <div class="form-group">
+        &nbsp;&nbsp;&nbsp;
+        @Html.Label("Search By")
+        @Html.DropDownListFor(m => m.condition, (SelectList)ViewBag.SearchType)
+        @Html.TextBoxFor(m => m.value)
+        <input type="submit" value="Search" class="btn-primary" />
+
+    </div>
+}
+
+<div id="divInsurances">
+
+</div>
+
+
+
+@*
+    @Ajax.ActionLink("Search", "SearchPartial", "InsuranceFirm", Model, new AjaxOptions()
+                                                                                    {
+                                                                                        HttpMethod = "POST",
+                                                                                        UpdateTargetId = "divInsurances",
+                                                                                        InsertionMode = InsertionMode.Replace
+
+                                                                                    })
+
+*@

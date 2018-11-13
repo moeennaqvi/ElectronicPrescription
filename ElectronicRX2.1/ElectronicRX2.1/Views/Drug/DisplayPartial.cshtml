@@ -1,0 +1,84 @@
+﻿
+@model IEnumerable<ElectronicRX2._1.Models.DrugModel>
+
+
+<!--Table-->
+<table class="table table-striped table-bordered table-condensed" id="dataTable">
+    <thead>
+        <tr>
+            <th>
+                Drug ID
+            </th>
+            <th>
+                Drug Name
+            </th>
+            <th>
+                Drug Warning
+            </th>
+            <th>
+                Food Warning
+            </th>
+            <th>
+                Disease Warning
+            </th>
+            <th>
+                Alergy Warning
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DrugId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DrugName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DrugWarning)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FoodWarning)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiseaseWarning)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlergyWarning)
+                </td>
+
+                <td>
+                    <input type="button" class="btn btn-sm btn-success" value="Select" id="btnSelected" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+
+    jQuery('#dataTable tbody tr').on('click', function () {
+            var $row = jQuery(this).closest('tr');
+            var $columns = $row.find('td');
+            $columns.addClass('row-highlight');
+            var objects = [];
+            var values = "";
+            jQuery.each($columns, function (i, item) {
+                objects[i] = $.trim(item.innerHTML);
+                values = values + "" + item.innerHTML;
+            });
+            $('#medicineModal').modal('hide');
+            $('#drugId').val(objects[0]);
+            $('#drugName').val(objects[1]);
+            $('#drugWarnings').val(objects[2]);
+            $('#foodWarnings').val(objects[3]);
+            $('#diseaseWarnings').val(objects[4]);
+            $('#alergyWarnings').val(objects[5]);
+            
+            
+        });
+</script>

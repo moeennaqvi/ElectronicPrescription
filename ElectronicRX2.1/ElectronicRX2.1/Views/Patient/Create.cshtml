@@ -1,0 +1,294 @@
+﻿@model ElectronicRX2._1.Models.PatientModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row text-left pad-top ">
+            <div class="col-md-12">
+                <h2>Patient Registration Page</h2>
+            </div>
+        </div>
+        <form>
+
+            <fieldset>
+                <legend>Personal Information</legend>
+                <div class='row'>
+
+                    <div class='col-sm-4'>
+                        <div class='form-group'>
+                            <label for="user_firstname">&nbsp;&nbsp; First name*</label>
+                            <div class="form-group input-group">
+                                &nbsp;&nbsp;&nbsp;
+                                <span class="input-group-addon">
+
+                                    <i class="fa fa-circle-o-notch">
+                                    </i>
+                                </span>
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @id = "user_title", size = "30" } })
+                            </div>
+                            <div class="form-group input-group">
+                                &nbsp;&nbsp;&nbsp;
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class='col-sm-4'>
+                        <div class='form-group'>
+                            <label for="user_lastname">Last name*</label>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon"><i class="fa fa-circle-o-notch"></i></span>
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @id = "user_title", size = "30" } })
+
+                            </div>
+                            <div class="form-group">
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-4'>
+                        <div class='form-group input-group'>
+                            <label for="user_title">Date of Birth*</label>
+                            <div class="form-group input-group">
+
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "datepicker", id = "user_title", size = "30" } })
+
+                            </div>
+                            <div class="form-group">
+                                @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='row'>
+
+                    <div class='col-sm-4'>
+                        <div class='form-group'>
+                            <label for="user_firstname">&nbsp;&nbsp; Marital Status</label>
+                            <div class="form-group input-group">
+                                &nbsp;&nbsp;&nbsp;
+                                <span class="input-group-addon"><i class="fa fa-heart"></i></span>
+                                @Html.EditorFor(model => model.MaritalStatus, new { htmlAttributes = new { @id = "user_title", size = "30" } })
+                                @Html.ValidationMessageFor(model => model.MaritalStatus, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-4'>
+                        <div class='form-group'>
+                            <label for="user_lastname">Gender</label>
+                            <div class="form-group">
+                                <div class="radio-inline">
+                                    @Html.RadioButtonFor(m => m.Gender, "Male") Male
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButtonFor(m => m.Gender, "Female") Female
+                                </div>
+                                <div class="radio-inline">
+                                    @Html.RadioButtonFor(m => m.Gender, "Other") Other
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!--Contact Information-->
+
+            <fieldset>
+                <legend>Contact Information</legend>
+                <div class='row'>
+                    <div class='col-sm-4'>
+                        <div class='form-group'>
+                            <label for="user_title">&nbsp;&nbsp; Email</label>
+                            <div class="form-group input-group">
+                                &nbsp;&nbsp;&nbsp;
+                                <span class="input-group-addon">@@</span>
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @id = "user_title", size = "30" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-4'>
+                        <div class='form-group'>
+                            <label for="user_firstname">Phone Number</label>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                @Html.EditorFor(model => model.HomeNumber, new { htmlAttributes = new { @id = "user_title", size = "30" } })
+                                @Html.ValidationMessageFor(model => model.HomeNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-4'>
+                        <div class='form-group'>
+                            <label for="user_lastname">Zip Code</label>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon"><i class="fa fa-bullseye"></i></span>
+                                @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @id = "user_title", size = "30" } })
+                                @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-sm-4'>
+                        <div class='form-group'>
+                            <label for="user_firstname">&nbsp;&nbsp; Street Address</label>
+                            <div class="form-group input-group">
+                                &nbsp;&nbsp;&nbsp;
+                                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @id = "user_title", size = "30" } })
+                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-4'>
+                        <div class='form-group'>
+                            <label for="user_firstname">City</label>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon"><i class="fa fa-building-o"></i></span>
+                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @id = "user_title", size = "30" } })
+                                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-4'>
+                        <div class='form-group'>
+                            <label for="user_firstname">State</label>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon"><i class="fa fa-globe"></i></span>
+                                @Html.EditorFor(model => model.State, new { htmlAttributes = new { @id = "user_title", size = "30" } })
+                                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!--Insurance Information-->
+            <fieldset>
+                <legend>Insurance Information</legend>
+                <div class="col-md-9" id="PatientInsurance">
+                    <div class='row'>
+
+                        <div class="col-md-2">
+                            <label for="user_title">&nbsp;&nbsp; Company ID</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.InsuranceFirmID, new { htmlAttributes = new { @id = "InsuranceFirmId" , size = "200" } })
+                            @Html.ValidationMessageFor(model => model.InsuranceFirmID, "", new { @class = "text-danger" })
+                            
+                        </div>
+                        <div class="col-md-2">
+                            <input type="button" class="btn-primary" data-toggle="modal" data-target="#exampleModal" value="Search" />
+                        </div>
+                    </div>
+                    <div class='row'>
+
+                        <div class="col-md-2">
+                            <label for="user_title">&nbsp;&nbsp; Name</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.InsuranceFirmName, new { htmlAttributes = new { @id = "InsuranceFirmName", size = "200" } })
+                            @Html.ValidationMessageFor(model => model.InsuranceFirmName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="user_title">&nbsp;&nbsp; Address</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.InsuranceFirmAdress, new { htmlAttributes = new { @id = "InsuranceFirmAddress", size = "200" } })
+                            @Html.ValidationMessageFor(model => model.InsuranceFirmAdress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="user_title">&nbsp;&nbsp; City</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.InsuranceFirmCity, new { htmlAttributes = new { @id = "InsuranceFirmCity", size = "200" } })
+                            @Html.ValidationMessageFor(model => model.InsuranceFirmCity, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <label for="user_title">&nbsp;&nbsp; State</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.InsuranceFirmState, new { htmlAttributes = new { @id = "InsuranceFirmState", size = "200" } })
+
+
+                            @Html.ValidationMessageFor(model => model.InsuranceFirmState, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="user_title">&nbsp;&nbsp; Policy No.*</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.InsurancePolicyNumber, new { htmlAttributes = new { @id = "user_title", size = "200" } })
+                            @Html.ValidationMessageFor(model => model.InsurancePolicyNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-2">
+                            <label for="user_title">&nbsp;&nbsp; Group No.</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.InsuranceGroupNumber, new { htmlAttributes = new { @id = "user_title", size = "200" } })
+                            @Html.ValidationMessageFor(model => model.InsuranceGroupNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+        <!--Next one-->
+        <hr />
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create Patient" class="btn btn-success btn-sm" />
+                <a href="~/Patient/Search" class="btn btn-danger btn-sm">Back</a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+}
+
+<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel"><b>Search Insurance Firm</b></h4>
+            </div>
+            <div class="modal-body">
+                @{ Html.RenderAction("SearchPartial", "InsuranceFirm"); }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>

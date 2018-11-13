@@ -1,0 +1,28 @@
+﻿@model ElectronicRX2._1.Models.DrugSearchViewModel
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<!---->
+@using (Ajax.BeginForm("SearchPartial", "Drug", new AjaxOptions()
+                                                        {
+                                                            HttpMethod = "POST",
+                                                            UpdateTargetId = "divDrugs",
+                                                            InsertionMode = InsertionMode.Replace
+                                                        }))
+{
+
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <div class="form-group">
+        &nbsp;&nbsp;&nbsp;
+        @Html.Label("Search By")
+        @Html.DropDownListFor(m => m.condition, (SelectList)ViewBag.SearchType)
+        @Html.TextBoxFor(m => m.value)
+        <input type="submit" value="Search" class="btn-primary" />
+
+    </div>
+}
+
+<div id="divDrugs">
+
+</div>

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<ElectronicRX2._1.Models.PharmacistModel>
+
+@{
+    var db = new ElectronicRX2._1.DataAccess.PrescriptionService();
+
+}
+
+
+<table class="table table-striped table-bordered table-condensed">
+    <tr>
+        <th>
+            Pharmacist ID
+        </th>
+        <th>
+            First Name
+        </th>
+        <th>
+            Last Name
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Date of Birth
+        </th>
+        <th>
+            Mobile Number
+        </th>
+        <th>
+            Pharmacy Name
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PharmacistID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.Label(item.DOB.Day.ToString() + "-" + item.DOB.Month.ToString() + "-" + item.DOB.Year.ToString())
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MobileNumber)
+            </td>
+            <td>
+                @Html.Label(db.pharmacies.Get(item.PharmacyID).PharmacyName.ToString())
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+

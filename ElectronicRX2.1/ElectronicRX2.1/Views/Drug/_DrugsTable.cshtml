@@ -1,0 +1,68 @@
+﻿@model IEnumerable<ElectronicRX2._1.Models.DrugModel>
+
+
+<!--Table-->
+<table class="table table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>
+                Drug ID
+            </th>
+            <th>
+                Drug Name
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Active Ingredient
+            </th>
+            <th>
+                Drug Type
+            </th>
+            <th>
+                Label Details
+            </th>
+            <th>
+                Manufacturer Company
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DrugId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DrugName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DrugCategory)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActiveIngredient)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DrugType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LabelDetails)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PharmaceuticalFirmName)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,53 @@
+﻿@model ElectronicRX2._1.Models.AdminSearchViewModel
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+@{
+    ViewBag.Title = "Search";
+    var user = User.Identity.Name;
+}
+
+<h2>Search Admins</h2>
+<hr />
+
+
+@using (Ajax.BeginForm("Search", "Admin", new AjaxOptions()
+                                                        {
+                                                            HttpMethod = "POST",
+                                                            UpdateTargetId = "divAdmins",
+                                                            InsertionMode = InsertionMode.Replace
+                                                        }))
+{
+    <div class="row">
+        @Html.Label("Search By")
+        @Html.DropDownListFor(m => m.condition, (SelectList)ViewBag.SearchType)
+        @Html.TextBoxFor(m => m.value)
+        @Html.EditorFor(m => m.user, new { htmlAttributes = new { @type = "hidden", id="user" } })
+        <input type="submit" value="Search" class="btn btn-sm btn-primary" />
+    </div>
+    <hr />
+
+
+}
+
+<div id="divAdmins">
+
+</div>
+
+<p>
+    <a href="~/Admin/New" class="btn btn-primary">Create New</a>
+</p>
+
+@if (TempData["notice"] != null)
+{
+    <p>@TempData["notice"]</p>
+}
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#user').val('@user');
+    });
+</script>
